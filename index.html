@@ -1,567 +1,429 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FF REWARD HUB</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            user-select: none;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            background-color: #061016;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 15px 0;
-            overflow-x: hidden;
-        }
+  <title>Macro Space Panel</title>
 
-        .mobile-container {
-            width: 100%;
-            max-width: 420px;
-            background: #09171f;
-            border-radius: 16px;
-            padding: 20px 15px 30px;
-            box-shadow: 0 0 25px rgba(0, 229, 255, 0.15);
-            position: relative;
-            min-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        .title {
-            font-size: 26px;
-            font-weight: 800;
-            color: #00e5ff;
-            text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
+    html, body {
+      width: 100%;
+      min-height: 100%;
+    }
 
-        .social-tag {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
-            font-size: 18px;
-            font-weight: 600;
-            color: #ff007f;
-        }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: "Segoe UI", Arial, sans-serif;
+      overflow-x: hidden;
+    }
 
-        .instagram-icon {
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4px;
-            box-shadow: 0 0 10px rgba(220, 39, 67, 0.5);
-        }
+    header {
+      width: 100%;
+      padding: 18px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #87CEEB, #5FB9E0);
+      box-shadow: 0 4px 10px rgba(0,0,0,.3);
+    }
 
-        .instagram-icon svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,.2);
+    }
 
-        .reward-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            width: 100%;
-            margin-bottom: 20px;
-        }
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-        .card {
-            background: #0d1f2d;
-            border: 2px solid #00e5ff;
-            border-radius: 12px;
-            aspect-ratio: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 0 8px rgba(0, 229, 255, 0.3), 0 0 8px rgba(0, 229, 255, 0.3);
-            transition: transform 0.2s, border-color 0.2s;
-            padding: 5px;
-        }
+    .video-section {
+      margin: 30px 0 45px;
+      text-align: center;
+    }
 
-        .card img {
-            width: 85%;
-            height: 85%;
-            object-fit: contain;
-            pointer-events: none;
-        }
+    .video-section h2 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
 
-        @keyframes neonBlink {
-            0% { box-shadow: 0 0 5px #00e5ff, inset 0 0 5px #00e5ff; border-color: #00e5ff; }
-            50% { box-shadow: 0 0 20px #00ffff, inset 0 0 15px #00ffff; border-color: #ffffff; }
-            100% { box-shadow: 0 0 12px #00e5ff, inset 0 0 8px #00e5ff; border-color: #00e5ff; }
-        }
+    .video-container {
+      width: 100%;
+      max-width: 800px;
+      aspect-ratio: 16 / 9;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      background: #171717;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.5);
+    }
 
-        .card.selected {
-            border-color: #00ffff;
-            animation: neonBlink 0.6s ease-in-out infinite alternate;
-            transform: scale(0.96);
-        }
+    .video-container video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      background: #171717;
+    }
 
-        .input-group {
-            width: 85%;
-            margin-bottom: 15px;
-        }
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+      background: rgba(0,0,0,.4);
+    }
 
-        .uid-input {
-            width: 100%;
-            padding: 10px 14px;
-            font-size: 14px;
-            background: #0a1924;
-            border: 1.5px solid #00e5ff;
-            border-radius: 20px;
-            color: #fff;
-            text-align: center;
-            outline: none;
-            box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
-        }
+    .play-button {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-left: 5px;
+      background: rgba(0,0,0,.72);
+      font-size: 38px;
+      box-shadow: 0 5px 25px rgba(0,0,0,.5);
+      transition: .15s ease;
+    }
 
-        .uid-input::placeholder {
-            color: #8fa3b0;
-            font-size: 13px;
-        }
+    .play-overlay:hover .play-button {
+      transform: scale(1.08);
+      background: rgba(0,0,0,.88);
+    }
 
-        .claim-btn {
-            width: 85%;
-            padding: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            background: linear-gradient(90deg, #0088ff, #00e5ff);
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    .play-overlay:active .play-button {
+      transform: scale(.95);
+    }
 
-        .instruction {
-            font-size: 12px;
-            color: #e0f7fa;
-            margin-top: 2px;
-        }
+    .play-text {
+      margin-top: 15px;
+      padding: 8px 18px;
+      border-radius: 20px;
+      background: rgba(0,0,0,.78);
+      font-size: 13px;
+    }
 
-        .admin-gear {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #0d1f2d;
-            border: 1.5px solid #00e5ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
-            font-size: 20px;
-            transition: transform 0.2s;
-        }
+    .app-card {
+      width: 95%;
+      max-width: 520px;
+      margin: 0 auto 50px;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #141414, #0b0b0b);
+      box-shadow: 0 12px 40px rgba(0,0,0,.8);
+    }
 
-        .admin-gear:hover {
-            transform: rotate(45deg);
-        }
+    .app-card::before {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 18px;
+      padding: 3px;
+      background: linear-gradient(
+        90deg,
+        #ff0000,
+        #ff7f00,
+        #ffff00,
+        #00ff00,
+        #00ffff,
+        #0000ff,
+        #8b00ff
+      );
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      z-index: -1;
+    }
 
-        .admin-page {
-            display: none;
-            width: 100%;
-            flex-direction: column;
-            align-items: center;
-        }
+    .app-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
 
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            width: 100%;
-            margin-bottom: 15px;
-        }
+    .app-icon {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+      border-radius: 14px;
+      object-fit: cover;
+    }
 
-        .admin-card-item {
-            background: #0b1d28;
-            border: 1px solid #00e5ff;
-            border-radius: 8px;
-            padding: 8px 5px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            align-items: center;
-        }
+    .text {
+      flex: 1;
+      min-width: 0;
+    }
 
-        .admin-card-item img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-            border-radius: 4px;
-        }
+    .tags {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
 
-        .upload-btn-label {
-            width: 100%;
-            font-size: 10px;
-            padding: 6px 2px;
-            background: #0088ff;
-            color: white;
-            text-align: center;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    .tag {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
 
-        .file-input {
-            display: none;
-        }
+    .tag.new {
+      background: #ff3b3b;
+    }
 
-        .admin-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(90deg, #0055ff, #00bfff);
-            border: none;
-            color: white;
-            font-weight: bold;
-            border-radius: 20px;
-            cursor: pointer;
-            margin-top: 8px;
-            font-size: 14px;
-        }
+    .tag.premium {
+      background: #6a5cff;
+    }
 
-        .back-btn {
-            width: 100%;
-            padding: 10px;
-            background: transparent;
-            border: 1px solid #00e5ff;
-            color: #00e5ff;
-            font-weight: bold;
-            border-radius: 20px;
-            cursor: pointer;
-            margin-top: 8px;
-        }
+    .text h3 {
+      margin: 6px 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
 
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 999;
-            justify-content: center;
-            align-items: center;
-        }
+    .text p {
+      margin: 4px 0;
+      color: #bdbdbd;
+      font-size: 13px;
+      line-height: 1.5;
+    }
 
-        .modal-box {
-            background: #09171f;
-            border: 2px solid #00e5ff;
-            border-radius: 16px;
-            width: 80%;
-            max-width: 320px;
-            padding: 25px 15px;
-            text-align: center;
-            box-shadow: 0 0 25px #00e5ff;
-            position: relative;
-        }
+    .stars {
+      margin-top: 6px;
+      color: #ffcc00;
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
 
-        .modal-box h2 {
-            color: #00e5ff;
-            font-size: 24px;
-            margin: 10px 0;
-            text-shadow: 0 0 8px #00e5ff;
-        }
+    .install-btn {
+      width: 100%;
+      display: block;
+      margin-top: 20px;
+      padding: 16px;
+      border: 0;
+      border-radius: 35px;
+      color: #fff;
+      background: linear-gradient(90deg, #00ff88, #00cc6a);
+      box-shadow: 0 8px 25px rgba(0,255,136,.4);
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: .3s;
+    }
 
-        .modal-box p {
-            font-size: 13px;
-            color: #d1f5ff;
-        }
+    .install-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0,255,136,.6);
+    }
 
-        .falling-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
+    .footer-note {
+      max-width: 520px;
+      margin: -25px auto 40px;
+      color: #888;
+      font-size: 11px;
+      line-height: 1.5;
+      text-align: center;
+    }
 
-        .falling-item {
-            position: absolute;
-            top: -20px;
-            font-size: 20px;
-            animation: fall 2.5s linear infinite;
-        }
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 22px;
+      }
 
-        @keyframes fall {
-            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-        }
-    </style>
+      .video-section h2 {
+        font-size: 20px;
+      }
+
+      .app-icon {
+        width: 64px;
+        height: 64px;
+      }
+
+      .text h3 {
+        font-size: 18px;
+      }
+
+      .text p {
+        font-size: 12px;
+      }
+
+      .install-btn {
+        padding: 14px;
+        font-size: 16px;
+      }
+
+      .play-button {
+        width: 70px;
+        height: 70px;
+        font-size: 32px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="mobile-container">
+  <header>
+    <h1>Macro Space Panel</h1>
+  </header>
 
-    <div id="homePage" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-        <div class="title">FF REWARD HUB</div>
+  <main class="container">
 
-        <div class="social-tag">
-            <div class="instagram-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                </svg>
-            </div>
-            <span>@goldi_yarr</span>
+    <section class="video-section">
+      <h2>WATCH FULL VIDEO</h2>
+
+      <div class="video-container">
+
+        <video
+          id="mainVideo"
+          playsinline
+          preload="metadata"
+          controls
+        >
+          <source
+            src="https://videotourl.com/videos/1787380474454-f1c24e98-cdb7-4dfb-a82e-1557a57c16da.mp4"
+            type="video/mp4"
+          >
+
+          Your browser does not support HTML5 video.
+        </video>
+
+        <div id="playOverlay" class="play-overlay">
+          <div class="play-button">▶</div>
+          <div class="play-text">Tap to Play with Sound</div>
         </div>
 
-        <div class="reward-grid" id="rewardGrid"></div>
+      </div>
+    </section>
 
-        <div class="input-group">
-            <input type="text" class="uid-input" id="gameUid"
-                   placeholder="Enter Game UID (e.g., 12345678)">
+    <section class="app-card">
+
+      <div class="app-info">
+
+        <img
+          src="https://i.postimg.cc/1thTvbSs/file-00000000b7d481f7ae7b6a2fd50eb6de.png"
+          alt="Macro Space Panel"
+          class="app-icon"
+        >
+
+        <div class="text">
+
+          <div class="tags">
+            <span class="tag new">NEW</span>
+            <span class="tag premium">PREMIUM</span>
+          </div>
+
+          <h3>Macro Space Panel</h3>
+
+          <p>
+            MACRO SPACE PANEL
+            <br>
+            UNLIMITED ACCESS
+          </p>
+
+          <div class="stars">★★★★★</div>
+
         </div>
 
-        <button class="claim-btn" onclick="handleClaim(event)">
-            CLAIM REWARD
-        </button>
+      </div>
 
-        <div class="instruction">✨ Tap any reward card to select ✨</div>
+      <!-- FIRST INSTALL LINK -->
+      <a
+        class="install-btn"
+        href="https://terasharelink.com/s/1HxD3iix-lrpndpLuEPY-qA"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        ⬇ INSTALL 1 ⬇
+      </a>
 
-        <div class="admin-gear" onclick="toggleAdmin(true)" title="Admin Panel">⚙️</div>
+      <!-- SECOND INSTALL LINK -->
+      <a
+        class="install-btn"
+        href="https://terasharelink.com/s/13fs-7G2NgSrsApXNiZA0IQ"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        ⬇ INSTALL 2 ⬇
+      </a>
+
+    </section>
+
+    <div class="footer-note">
+      This website is an independent project and is not
+      affiliated with or endorsed by Garena.
     </div>
 
-    <div id="adminPage" class="admin-page">
-        <div class="title" style="font-size: 20px;">ADMIN PANEL</div>
-        <div style="font-size: 12px; color: #8fa3b0; margin-bottom: 15px;">
-            PNG इमेज अपलोड करें और 'Save' दबाएँ
-        </div>
+  </main>
 
-        <div class="admin-grid" id="adminGrid"></div>
+  <script>
+    const video = document.getElementById("mainVideo");
+    const overlay = document.getElementById("playOverlay");
 
-        <button class="admin-btn" onclick="saveAdminChanges()">💾 Save & Apply</button>
-        <button class="back-btn" onclick="toggleAdmin(false)">Back to Home</button>
-    </div>
+    overlay.addEventListener("click", function(event) {
+      event.preventDefault();
+      event.stopPropagation();
 
-</div>
+      video.muted = false;
 
-<div class="modal-overlay" id="successModal">
-    <div class="falling-container" id="fallingContainer"></div>
-    <div class="modal-box">
-        <div style="font-size: 32px;">🎃🎁</div>
-        <h2>SUCCESS!</h2>
-        <p>Your reward has been claimed</p>
-        <button class="claim-btn"
-                style="margin-top: 15px; width: 60%; padding: 8px; font-size: 12px;"
-                onclick="closeModal()">OK</button>
-    </div>
-</div>
+      const request = video.play();
 
-<script>
-    // नया Terashare लिंक
-    const REWARD_LINK = "https://terasharelink.com/s/1HxD3iix-lrpndpLuEPY-qA";
+      if (request !== undefined) {
+        request.then(function() {
+          overlay.style.display = "none";
+        }).catch(function(error) {
+          console.log("Playback with sound blocked:", error);
 
-    function createDefaultSvg(index) {
-        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-            <rect width="100" height="100" rx="12" fill="#0d1f2d"/>
-            <text x="50%" y="42%" dominant-baseline="middle" text-anchor="middle" fill="#00e5ff" font-size="28" font-weight="bold">🎁</text>
-            <text x="50%" y="75%" dominant-baseline="middle" text-anchor="middle" fill="#00e5ff" font-size="12" font-family="sans-serif" font-weight="bold">REWARD ${index + 1}</text>
-        </svg>`;
-        return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
-    }
+          video.muted = true;
 
-    const defaultImages = Array.from({ length: 9 }, (_, i) => createDefaultSvg(i));
-
-    let currentImages = [];
-    try {
-        const stored = localStorage.getItem('ff_reward_images');
-        currentImages = stored ? JSON.parse(stored) : defaultImages;
-        if (!Array.isArray(currentImages) || currentImages.length !== 9) {
-            currentImages = defaultImages;
-        }
-    } catch (e) {
-        currentImages = defaultImages;
-    }
-
-    let tempImages = [...currentImages];
-
-    function renderGrid() {
-        const grid = document.getElementById('rewardGrid');
-        grid.innerHTML = '';
-
-        currentImages.forEach((imgSrc) => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.onclick = () => card.classList.toggle('selected');
-
-            const img = document.createElement('img');
-            img.src = imgSrc;
-            img.alt = 'Reward';
-
-            card.appendChild(img);
-            grid.appendChild(card);
+          video.play().then(function() {
+            overlay.style.display = "none";
+          }).catch(function(error2) {
+            console.log("Video playback failed:", error2);
+          });
         });
-    }
+      }
+    });
 
-    function renderAdminGrid() {
-        tempImages = [...currentImages];
-        const adminGrid = document.getElementById('adminGrid');
-        adminGrid.innerHTML = '';
+    video.addEventListener("play", function() {
+      overlay.style.display = "none";
+    });
 
-        tempImages.forEach((imgSrc, index) => {
-            const item = document.createElement('div');
-            item.className = 'admin-card-item';
-
-            item.innerHTML = `
-                <img src="${imgSrc}" id="admin-preview-${index}" alt="Slot ${index + 1}">
-                <label for="file-upload-${index}" class="upload-btn-label">Upload PNG</label>
-                <input type="file" id="file-upload-${index}" class="file-input"
-                       accept="image/*" onchange="previewImage(${index}, event)">
-            `;
-
-            adminGrid.appendChild(item);
-        });
-    }
-
-    function previewImage(index, event) {
-        const file = event.target.files[0];
-
-        if (file) {
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                const img = new Image();
-
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const maxDim = 250;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > height) {
-                        if (width > maxDim) {
-                            height = Math.round((height * maxDim) / width);
-                            width = maxDim;
-                        }
-                    } else {
-                        if (height > maxDim) {
-                            width = Math.round((width * maxDim) / height);
-                            height = maxDim;
-                        }
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    const optimizedBase64 = canvas.toDataURL('image/png');
-
-                    document.getElementById(`admin-preview-${index}`).src = optimizedBase64;
-                    tempImages[index] = optimizedBase64;
-                };
-
-                img.src = e.target.result;
-            };
-
-            reader.readAsDataURL(file);
-        }
-    }
-
-    function toggleAdmin(show) {
-        document.getElementById('homePage').style.display = show ? 'none' : 'flex';
-        document.getElementById('adminPage').style.display = show ? 'flex' : 'none';
-
-        if (show) {
-            renderAdminGrid();
-        }
-    }
-
-    function saveAdminChanges() {
-        currentImages = [...tempImages];
-
-        try {
-            localStorage.setItem('ff_reward_images', JSON.stringify(currentImages));
-        } catch (err) {
-            console.error("Storage error:", err);
-            alert("चेतावनी: इमेज का साइज़ बड़ा होने के कारण स्टोरेज में समस्या आ सकती है।");
-        }
-
-        renderGrid();
-        toggleAdmin(false);
-        alert('इमेज सफलतापूर्वक सेव हो गई और होम पेज पर अपडेट हो गई!');
-    }
-
-    function handleClaim(e) {
-        if (e) e.preventDefault();
-
-        const uid = document.getElementById('gameUid').value.trim();
-        const selected = document.querySelectorAll('.card.selected');
-
-        if (selected.length === 0) {
-            alert('कृपया कम से कम एक रिवॉर्ड चुनें!');
-            return;
-        }
-
-        if (uid.length < 8 || !/^\d+$/.test(uid)) {
-            alert('कृपया एक सही UID दर्ज करें (कम से कम 8 अंक)!');
-            return;
-        }
-
-        // UID और रिवॉर्ड चुनने के बाद दिए गए लिंक पर जाएँ
-        window.location.href = REWARD_LINK;
-    }
-
-    function showSuccessModal() {
-        const modal = document.getElementById('successModal');
-        const container = document.getElementById('fallingContainer');
-
-        container.innerHTML = '';
-        modal.style.display = 'flex';
-
-        const items = ['💎', '🎁', '❤️', '⚡'];
-
-        for (let i = 0; i < 20; i++) {
-            const el = document.createElement('div');
-            el.className = 'falling-item';
-            el.innerText = items[Math.floor(Math.random() * items.length)];
-            el.style.left = Math.random() * 100 + '%';
-            el.style.animationDelay = Math.random() * 2 + 's';
-            el.style.animationDuration = (2 + Math.random() * 1.5) + 's';
-            container.appendChild(el);
-        }
-    }
-
-    function closeModal() {
-        document.getElementById('successModal').style.display = 'none';
-    }
-
-    renderGrid();
-</script>
+    video.addEventListener("ended", function() {
+      overlay.style.display = "flex";
+    });
+  </script>
 
 </body>
 </html>
