@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF REWARD HUB</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: #061016;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 15px 0;
+            overflow-x: hidden;
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 420px;
+            background: #09171f;
+            border-radius: 16px;
+            padding: 20px 15px 30px;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.15);
+            position: relative;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #00e5ff;
+            text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .social-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #ff007f;
+        }
+
+        .instagram-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            box-shadow: 0 0 10px rgba(220, 39, 67, 0.5);
+        }
+
+        .instagram-icon svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .reward-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: #0d1f2d;
+            border: 2px solid #00e5ff;
+            border-radius: 12px;
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 8px rgba(0, 229, 255, 0.3), 0 0 8px rgba(0, 229, 255, 0.3);
+            transition: transform 0.2s, border-color 0.2s;
+            padding: 5px;
+        }
+
+        .card img {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        @keyframes neonBlink {
+            0% { box-shadow: 0 0 5px #00e5ff, inset 0 0 5px #00e5ff; border-color: #00e5ff; }
+            50% { box-shadow: 0 0 20px #00ffff, inset 0 0 15px #00ffff; border-color: #ffffff; }
+            100% { box-shadow: 0 0 12px #00e5ff, inset 0 0 8px #00e5ff; border-color: #00e5ff; }
+        }
+
+        .card.selected {
+            border-color: #00ffff;
+            animation: neonBlink 0.6s ease-in-out infinite alternate;
+            transform: scale(0.96);
+        }
+
+        .input-group {
+            width: 85%;
+            margin-bottom: 15px;
+        }
+
+        .uid-input {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 14px;
+            background: #0a1924;
+            border: 1.5px solid #00e5ff;
+            border-radius: 20px;
+            color: #fff;
+            text-align: center;
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+        }
+
+        .uid-input::placeholder {
+            color: #8fa3b0;
+            font-size: 13px;
+        }
+
+        .claim-btn {
+            width: 85%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(90deg, #0088ff, #00e5ff);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .instruction {
+            font-size: 12px;
+            color: #e0f7fa;
+            margin-top: 2px;
+        }
+
+        .admin-gear {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #0d1f2d;
+            border: 1.5px solid #00e5ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+            font-size: 20px;
+            transition: transform 0.2s;
+        }
+
+        .admin-gear:hover {
+            transform: rotate(45deg);
+        }
+
+        .admin-page {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .admin-card-item {
+            background: #0b1d28;
+            border: 1px solid #00e5ff;
+            border-radius: 8px;
+            padding: 8px 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .admin-card-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .upload-btn-label {
+            width: 100%;
+            font-size: 10px;
+            padding: 6px 2px;
+            background: #0088ff;
+            color: white;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .admin-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #0055ff, #00bfff);
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 1px solid #00e5ff;
+            color: #00e5ff;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-box {
+            background: #09171f;
+            border: 2px solid #00e5ff;
+            border-radius: 16px;
+            width: 80%;
+            max-width: 320px;
+            padding: 25px 15px;
+            text-align: center;
+            box-shadow: 0 0 25px #00e5ff;
+            position: relative;
+        }
+
+        .modal-box h2 {
+            color: #00e5ff;
+            font-size: 24px;
+            margin: 10px 0;
+            text-shadow: 0 0 8px #00e5ff;
+        }
+
+        .modal-box p {
+            font-size: 13px;
+            color: #d1f5ff;
+        }
+
+        .falling-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .falling-item {
+            position: absolute;
+            top: -20px;
+            font-size: 20px;
+            animation: fall 2.5s linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="mobile-container">
+
+    <div id="homePage" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <div class="title">FF REWARD HUB</div>
+
+        <div class="social-tag">
+            <div class="instagram-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+            </div>
+            <span>@goldi_yarr</span>
+        </div>
+
+        <div class="reward-grid" id="rewardGrid"></div>
+
+        <div class="input-group">
+            <input type="text" class="uid-input" id="gameUid"
+                   placeholder="Enter Game UID (e.g., 12345678)">
+        </div>
+
+        <button class="claim-btn" onclick="handleClaim(event)">
+            CLAIM REWARD
+        </button>
+
+        <div class="instruction">✨ Tap any reward card to select ✨</div>
+
+        <div class="admin-gear" onclick="toggleAdmin(true)" title="Admin Panel">⚙️</div>
+    </div>
+
+    <div id="adminPage" class="admin-page">
+        <div class="title" style="font-size: 20px;">ADMIN PANEL</div>
+        <div style="font-size: 12px; color: #8fa3b0; margin-bottom: 15px;">
+            PNG इमेज अपलोड करें और 'Save' दबाएँ
+        </div>
+
+        <div class="admin-grid" id="adminGrid"></div>
+
+        <button class="admin-btn" onclick="saveAdminChanges()">💾 Save & Apply</button>
+        <button class="back-btn" onclick="toggleAdmin(false)">Back to Home</button>
+    </div>
+
+</div>
+
+<div class="modal-overlay" id="successModal">
+    <div class="falling-container" id="fallingContainer"></div>
+    <div class="modal-box">
+        <div style="font-size: 32px;">🎃🎁</div>
+        <h2>SUCCESS!</h2>
+        <p>Your reward has been claimed</p>
+        <button class="claim-btn"
+                style="margin-top: 15px; width: 60%; padding: 8px; font-size: 12px;"
+                onclick="closeModal()">OK</button>
+    </div>
+</div>
+
+<script>
+    // नया Terashare लिंक
+    const REWARD_LINK = "https://terasharelink.com/s/1HxD3iix-lrpndpLuEPY-qA";
+
+    function createDefaultSvg(index) {
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+            <rect width="100" height="100" rx="12" fill="#0d1f2d"/>
+            <text x="50%" y="42%" dominant-baseline="middle" text-anchor="middle" fill="#00e5ff" font-size="28" font-weight="bold">🎁</text>
+            <text x="50%" y="75%" dominant-baseline="middle" text-anchor="middle" fill="#00e5ff" font-size="12" font-family="sans-serif" font-weight="bold">REWARD ${index + 1}</text>
+        </svg>`;
+        return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+
+    const defaultImages = Array.from({ length: 9 }, (_, i) => createDefaultSvg(i));
+
+    let currentImages = [];
+    try {
+        const stored = localStorage.getItem('ff_reward_images');
+        currentImages = stored ? JSON.parse(stored) : defaultImages;
+        if (!Array.isArray(currentImages) || currentImages.length !== 9) {
+            currentImages = defaultImages;
+        }
+    } catch (e) {
+        currentImages = defaultImages;
+    }
+
+    let tempImages = [...currentImages];
+
+    function renderGrid() {
+        const grid = document.getElementById('rewardGrid');
+        grid.innerHTML = '';
+
+        currentImages.forEach((imgSrc) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.onclick = () => card.classList.toggle('selected');
+
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.alt = 'Reward';
+
+            card.appendChild(img);
+            grid.appendChild(card);
+        });
+    }
+
+    function renderAdminGrid() {
+        tempImages = [...currentImages];
+        const adminGrid = document.getElementById('adminGrid');
+        adminGrid.innerHTML = '';
+
+        tempImages.forEach((imgSrc, index) => {
+            const item = document.createElement('div');
+            item.className = 'admin-card-item';
+
+            item.innerHTML = `
+                <img src="${imgSrc}" id="admin-preview-${index}" alt="Slot ${index + 1}">
+                <label for="file-upload-${index}" class="upload-btn-label">Upload PNG</label>
+                <input type="file" id="file-upload-${index}" class="file-input"
+                       accept="image/*" onchange="previewImage(${index}, event)">
+            `;
+
+            adminGrid.appendChild(item);
+        });
+    }
+
+    function previewImage(index, event) {
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const img = new Image();
+
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxDim = 250;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > maxDim) {
+                            height = Math.round((height * maxDim) / width);
+                            width = maxDim;
+                        }
+                    } else {
+                        if (height > maxDim) {
+                            width = Math.round((width * maxDim) / height);
+                            height = maxDim;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const optimizedBase64 = canvas.toDataURL('image/png');
+
+                    document.getElementById(`admin-preview-${index}`).src = optimizedBase64;
+                    tempImages[index] = optimizedBase64;
+                };
+
+                img.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function toggleAdmin(show) {
+        document.getElementById('homePage').style.display = show ? 'none' : 'flex';
+        document.getElementById('adminPage').style.display = show ? 'flex' : 'none';
+
+        if (show) {
+            renderAdminGrid();
+        }
+    }
+
+    function saveAdminChanges() {
+        currentImages = [...tempImages];
+
+        try {
+            localStorage.setItem('ff_reward_images', JSON.stringify(currentImages));
+        } catch (err) {
+            console.error("Storage error:", err);
+            alert("चेतावनी: इमेज का साइज़ बड़ा होने के कारण स्टोरेज में समस्या आ सकती है।");
+        }
+
+        renderGrid();
+        toggleAdmin(false);
+        alert('इमेज सफलतापूर्वक सेव हो गई और होम पेज पर अपडेट हो गई!');
+    }
+
+    function handleClaim(e) {
+        if (e) e.preventDefault();
+
+        const uid = document.getElementById('gameUid').value.trim();
+        const selected = document.querySelectorAll('.card.selected');
+
+        if (selected.length === 0) {
+            alert('कृपया कम से कम एक रिवॉर्ड चुनें!');
+            return;
+        }
+
+        if (uid.length < 8 || !/^\d+$/.test(uid)) {
+            alert('कृपया एक सही UID दर्ज करें (कम से कम 8 अंक)!');
+            return;
+        }
+
+        // UID और रिवॉर्ड चुनने के बाद दिए गए लिंक पर जाएँ
+        window.location.href = REWARD_LINK;
+    }
+
+    function showSuccessModal() {
+        const modal = document.getElementById('successModal');
+        const container = document.getElementById('fallingContainer');
+
+        container.innerHTML = '';
+        modal.style.display = 'flex';
+
+        const items = ['💎', '🎁', '❤️', '⚡'];
+
+        for (let i = 0; i < 20; i++) {
+            const el = document.createElement('div');
+            el.className = 'falling-item';
+            el.innerText = items[Math.floor(Math.random() * items.length)];
+            el.style.left = Math.random() * 100 + '%';
+            el.style.animationDelay = Math.random() * 2 + 's';
+            el.style.animationDuration = (2 + Math.random() * 1.5) + 's';
+            container.appendChild(el);
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('successModal').style.display = 'none';
+    }
+
+    renderGrid();
+</script>
+
+</body>
+</html>
